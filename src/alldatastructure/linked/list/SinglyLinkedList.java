@@ -1,7 +1,5 @@
 package alldatastructure.linked.list;
 
-import java.util.Iterator;
-
 public class SinglyLinkedList {
 
 	public Node head;
@@ -20,10 +18,10 @@ public class SinglyLinkedList {
 		} else if (index == 0) {
 			newNode.next = head;
 			head = newNode;
-		} else if (index > size) {
+		} else if (index >= size) {
 			tail.next = newNode;
 			tail = newNode;
-		} else if (index <= size) {
+		} else if (index < size) {
 			Node temp = head;
 			while (index > 1) {
 				temp = temp.next;
@@ -55,13 +53,16 @@ public class SinglyLinkedList {
 	}
 
 	boolean searchNode(int value) {
-
 		Node node = head;
-		while (node != null && node.value != value) {
-			node = node.next;
-		}
 
-		return node != null;
+		for (int i = 0; i < size; i++) {
+			if (node.value == value) {
+				return true;
+			}
+			node = node.next;
+
+		}
+		return false;
 	}
 
 	public void deletionOfNode(int location) {
@@ -83,21 +84,19 @@ public class SinglyLinkedList {
 				node = node.next;
 			}
 			if (location == size) {
-				node.next=null;
+				node.next = null;
 				tail = node;
-			}else {
-				Node delNode=node.next;
-				Node nextNode=delNode.next;
-				node.next=nextNode;
+				tail.next=head;
+			} else {
+				Node delNode = node.next;
+				Node nextNode = delNode.next;
+				node.next = nextNode;
 			}
 			size--;
 		}
 
 	}
 
-	@Override
-	public String toString() {
-		return "SinglyLinkedList [" + head + "]";
-	}
+	
 
 }
