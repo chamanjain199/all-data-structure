@@ -4,10 +4,10 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		//ArrayStack as=new ArrayStack();
-		LinkedListStack as=new LinkedListStack();
-		//as.createStack(5);
-		as.createStack();
+		ArrayStack as=new ArrayStack();
+		//LinkedListStack as=new LinkedListStack();
+		as.createStack(5);
+		//as.createStack();
 		as.push(1);
 		as.push(2);
 		as.push(3);
