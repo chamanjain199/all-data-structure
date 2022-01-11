@@ -4,8 +4,10 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		CircularArrayQueue laq=new CircularArrayQueue();
-		laq.createQueue(5);
+		LinearLLQueue laq=new LinearLLQueue();
+		//laq.createQueue(5);
+		laq.createQueue();
+
 		laq.enQueue(1);
 		laq.enQueue(2);
 		laq.enQueue(3);
