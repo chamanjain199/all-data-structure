@@ -163,3 +163,10 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/git,java,maven,eclipse,windows
 *.class
+bin/alldatastructure/linked/list/Node.class
+bin/alldatastructure/linked/list/Main.class
+*.class
+*.class
+*.class
+.classpath
+.classpath
