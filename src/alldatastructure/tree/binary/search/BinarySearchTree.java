@@ -10,16 +10,16 @@ public class BinarySearchTree {
 		root = null;
 	}
 
-	public BinaryTreeNode insert(BinaryTreeNode currentNode, int value) {
+	private BinaryTreeNode insert(BinaryTreeNode currentNode, int value) {
 		if (currentNode == null) {
-			currentNode = new BinaryTreeNode();
-			currentNode.value = value;
-			return currentNode;
-		} else if (currentNode.value <= value) {
-			currentNode = insert(currentNode.left, value);
+			BinaryTreeNode newNode = new BinaryTreeNode();
+			newNode.value = value;
+			return newNode;
+		} else if (value <= currentNode.value) {
+			currentNode.left = insert(currentNode.left, value);
 			return currentNode;
 		} else {
-			currentNode = insert(currentNode.right, value);
+			currentNode.right = insert(currentNode.right, value);
 			return currentNode;
 
 		}
@@ -27,7 +27,7 @@ public class BinarySearchTree {
 	}
 
 	public void insert(int value) {
-		insert(root, value);
+		root = insert(root, value);
 
 	}
 
@@ -61,7 +61,7 @@ public class BinarySearchTree {
 
 	}
 
-	public void levelOrderTraversal(BinaryTreeNode binaryTreeNode) {
+	public void levelOrderTraversal() {
 
 		Queue<BinaryTreeNode> queue = new LinkedList<BinaryTreeNode>();
 		queue.add(root);
@@ -75,6 +75,7 @@ public class BinarySearchTree {
 				queue.add(presentNode.right);
 			}
 		}
+		System.out.println();
 
 	}
 
@@ -91,6 +92,42 @@ public class BinarySearchTree {
 
 		}
 
+	}
+
+	public static BinaryTreeNode findSmallestNode(BinaryTreeNode binaryTreeNode) {
+
+		if (binaryTreeNode.left == null) {
+			return binaryTreeNode;
+		} else {
+			return findSmallestNode(binaryTreeNode.left);
+		}
+
+	}
+
+	public BinaryTreeNode deleteNode(BinaryTreeNode root, int value) {
+
+		if (root == null) {
+			System.out.println("Not found");
+			return null;
+		} else if (value < root.value) {
+			root.left = deleteNode(root.left, value);
+		} else if (value > root.value) {
+			root.right = deleteNode(root.right, value);
+		} else {
+			if (root.left != null && root.right != null) {
+				BinaryTreeNode temp = root;
+				BinaryTreeNode minimumNode = findSmallestNode(temp);
+				minimumNode = deleteNode(minimumNode, minimumNode.value);
+				temp.value = minimumNode.value;
+			} else if (root.left != null) {
+				root.left = null;
+			} else if (root.right != null) {
+				root.right = null;
+			} else {
+				root = null;
+			}
+		}
+		return root;
 	}
 
 }
