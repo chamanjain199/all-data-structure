@@ -4,16 +4,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BinarySearchTree {
-	BinaryNode root;
+	TreeNode root;
 
 	BinarySearchTree() {
 		root = null;
 	}
 
 	// Insert Method
-	private BinaryNode insert(BinaryNode currentNode, int value) {
+	private TreeNode insert(TreeNode currentNode, int value) {
 		if (currentNode == null) {
-			BinaryNode newNode = new BinaryNode();
+			TreeNode newNode = new TreeNode();
 			newNode.value = value;
 			// System.out.println("The value successfully inserted");
 			return newNode;
@@ -32,7 +32,7 @@ public class BinarySearchTree {
 
 	// PreOrder Traversal
 
-	public void preOrder(BinaryNode node) {
+	public void preOrder(TreeNode node) {
 		if (node == null) {
 			return;
 		}
@@ -42,7 +42,7 @@ public class BinarySearchTree {
 	}
 
 	// Inorder Traversal
-	public void inOrder(BinaryNode node) {
+	public void inOrder(TreeNode node) {
 		if (node == null) {
 			return;
 		}
@@ -53,7 +53,7 @@ public class BinarySearchTree {
 	}
 
 	// PostOrder Traversal
-	public void postOrder(BinaryNode node) {
+	public void postOrder(TreeNode node) {
 		if (node == null) {
 			return;
 		}
@@ -65,10 +65,10 @@ public class BinarySearchTree {
 	// Level Order
 
 	void levelOrder() {
-		Queue<BinaryNode> queue = new LinkedList<BinaryNode>();
+		Queue<TreeNode> queue = new LinkedList<TreeNode>();
 		queue.add(root);
 		while (!queue.isEmpty()) {
-			BinaryNode presentNode = queue.remove();
+			TreeNode presentNode = queue.remove();
 			System.out.print(presentNode.value + " ");
 			if (presentNode.left != null) {
 				queue.add(presentNode.left);
@@ -80,7 +80,7 @@ public class BinarySearchTree {
 	}
 
 	// Search Method
-	BinaryNode search(BinaryNode node, int value) {
+	TreeNode search(TreeNode node, int value) {
 		if (node == null) {
 			System.out.println("Value: " + value + " not found in BST");
 			return null;
@@ -95,7 +95,7 @@ public class BinarySearchTree {
 	}
 
 	// Minimum node
-	public static BinaryNode minimumNode(BinaryNode root) {
+	public static TreeNode minimumNode(TreeNode root) {
 		if (root.left == null) {
 			return root;
 		} else {
@@ -104,7 +104,7 @@ public class BinarySearchTree {
 	}
 
 	// Delete node
-	public BinaryNode deleteNode(BinaryNode root, int value) {
+	public TreeNode deleteNode(TreeNode root, int value) {
 		if (root == null) {
 			System.out.println("Value not found in BST");
 			return null;
@@ -115,8 +115,8 @@ public class BinarySearchTree {
 			root.right = deleteNode(root.right, value);
 		} else {
 			if (root.left != null && root.right != null) {
-				BinaryNode temp = root;
-				BinaryNode minNodeForRight = minimumNode(temp.right);
+				TreeNode temp = root;
+				TreeNode minNodeForRight = minimumNode(temp.right);
 				root.value = minNodeForRight.value;
 				root.right = deleteNode(root.right, minNodeForRight.value);
 			} else if (root.left != null) {

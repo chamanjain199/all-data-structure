@@ -1,9 +1,9 @@
 package alldatastructure.tree.binary.search.video;
 
-public class BinaryNode {
+public class TreeNode {
 	public int value;
-	public BinaryNode left;
-	public BinaryNode right;
+	public TreeNode left;
+	public TreeNode right;
 	public int height;
 
 }
