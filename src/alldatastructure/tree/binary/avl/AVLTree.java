@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class AVLTree {
-
 	TreeNode root;
 
 	public AVLTree() {
@@ -18,15 +17,15 @@ public class AVLTree {
 		return node.height;
 	}
 
-	private int getBalancedHeight(TreeNode treeNode) {
-		if (treeNode == null) {
+	private int getBalancedHeight(TreeNode node) {
+		if (node == null) {
 			return 0;
 		}
-		return getHeight(treeNode.left) - getHeight(treeNode.right);
+		return getHeight(node.left) - getHeight(node.right);
 
 	}
 
-	private TreeNode rightRotation(TreeNode distortedNode) {
+	private TreeNode rotateRight(TreeNode distortedNode) {
 		TreeNode newNode = distortedNode.left;
 		distortedNode.left = distortedNode.left.right;
 		newNode.right = distortedNode;
@@ -36,7 +35,8 @@ public class AVLTree {
 
 	}
 
-	private TreeNode leftRotation(TreeNode distortedNode) {
+	private TreeNode rotateLeft(TreeNode distortedNode) {
+
 		TreeNode newNode = distortedNode.right;
 		distortedNode.right = distortedNode.right.left;
 		newNode.left = distortedNode;
@@ -46,124 +46,111 @@ public class AVLTree {
 
 	}
 
-	private TreeNode insert(TreeNode tempNode, int value) {
+	private TreeNode insert(TreeNode node, int value) {
 
-		if (tempNode == null) {
-			tempNode = new TreeNode();
-			tempNode.value = value;
-			tempNode.height = 1;
-			return tempNode;
-		} else if (value < tempNode.value) {
-			tempNode.left = insert(tempNode.left, value);
+		if (node == null) {
+			node = new TreeNode();
+			node.value = value;
+			node.height = 1;
+			return node;
+		} else if (value < node.value) {
+			node.left = insert(node.left, value);
+		} else if (value > node.value) {
+			node.right = insert(node.right, value);
+		}
+		node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
+		int balance = getBalancedHeight(node);
 
-		} else {
-			tempNode.right = insert(tempNode.right, value);
+		if (balance > 1 && getBalancedHeight(node.left) >= 0) {
+			return rotateRight(node);
+		} else if (balance > 1 && getBalancedHeight(node.left) < 0) {
+			node.left = rotateLeft(node.left);
+			return rotateRight(node);
+		} else if (balance < -1 && getBalancedHeight(node.right) <= 0) {
+			return rotateLeft(node);
+		} else if (balance < -1 && getBalancedHeight(node.right) > 0) {
+			node.right = rotateRight(node.right);
+			return rotateLeft(node);
 		}
 
-		tempNode.height = 1 + Math.max(getHeight(tempNode.left), getHeight(tempNode.right));
-		int balance = getBalancedHeight(tempNode);
-		if (balance > 1 && value < tempNode.left.value) {
-			tempNode = rightRotation(tempNode);
-		}
-		if (balance > 1 && value > tempNode.left.value) {
-			tempNode.left=leftRotation(tempNode.left);
-
-			tempNode = rightRotation(tempNode);
-		}
-		if (balance < -1 && value > tempNode.right.value) {
-			tempNode = leftRotation(tempNode);
-		}
-		if (balance < -1 && value < tempNode.right.value) {
-			tempNode.right=rightRotation(tempNode.right);
-			tempNode = leftRotation(tempNode);
-		}
-
-		return tempNode;
+		return node;
 	}
 
 	public void insert(int value) {
 		root = insert(root, value);
 	}
 
-	private TreeNode findMinimum(TreeNode node) {
+	private TreeNode minimunNode(TreeNode node) {
 		if (node.left == null) {
 			return node;
 		} else {
-			return findMinimum(node.left);
+			return minimunNode(node.left);
 		}
 
 	}
 
-	public TreeNode delete(TreeNode tempNode, int value) {
+	public TreeNode deleteNode(TreeNode node, int value) {
 
-		if (tempNode == null) {
-			System.out.println("Value " + value + " Not found");
-			return tempNode;
-		} else if (value == tempNode.value) {
-			if (tempNode.left != null && tempNode.right != null) {
-				TreeNode temp = tempNode;
-
-				TreeNode minimumRightNode = findMinimum(temp.right);
-				tempNode.value = minimumRightNode.value;
-				tempNode.right = delete(tempNode.right, minimumRightNode.value);
-
-			} else if (tempNode.left != null) {
-				tempNode = tempNode.left;
-			} else if (tempNode.right != null) {
-				tempNode = tempNode.right;
+		if (node == null) {
+			node = new TreeNode();
+			node.value = value;
+			node.height = 1;
+			return node;
+		} else if (value < node.value) {
+			node.left = deleteNode(node.left, value);
+		} else if (value > node.value) {
+			node.right = deleteNode(node.right, value);
+		} else if (value == node.value) {
+			if (node.left != null && node.right != null) {
+				TreeNode minimumNode = minimunNode(node.right);
+				node.value = minimumNode.value;
+				node.right = deleteNode(node.right, minimumNode.value);
+			} else if (node.left != null) {
+				node = node.left;
+			} else if (node.right != null) {
+				node = node.right;
 			} else {
-				tempNode = null;
+				node = null;
 			}
-		} else if (value < tempNode.value) {
-			tempNode.left = delete(tempNode.left, value);
 
-		} else if (value > tempNode.value) {
-			tempNode.right = delete(tempNode.right, value);
-		}
-		int balance = getBalancedHeight(tempNode);
-
-		if (balance > 1 && getBalancedHeight(tempNode.left) >= 0) {
-			System.out.println("Right rotate "+tempNode.value+" => "+tempNode.left.value);
-
-			return rightRotation(tempNode);
-		}
-		if (balance > 1 && getBalancedHeight(tempNode.left) < 0) {
-			System.out.println("RL Right rotate "+tempNode.left.value+" => "+tempNode.left.value);
-			System.out.println("RL Left rotate "+tempNode.value+" => "+tempNode.value);
-
-			tempNode.left = leftRotation(tempNode.left);
-
-			return rightRotation(tempNode);
-		}
-		if (balance < -1 && getBalancedHeight(tempNode.right) <= 0) {
-			System.out.println("L");
-			return leftRotation(tempNode);
-		}
-		if (balance < -1 && getBalancedHeight(tempNode.right) > 0) {
-			System.out.println("RL");
-			tempNode.right = rightRotation(tempNode.right);
-			return leftRotation(tempNode);
 		}
 
-		return tempNode;
+		int balance = getBalancedHeight(node);
+		if (balance > 1 && getBalancedHeight(node.left) >= 0) {
+			return rotateRight(node);
+		} else if (balance > 1 && getBalancedHeight(node.left) < 0) {
+			node.left = rotateLeft(node.left);
+			return rotateRight(node);
+		} else if (balance < -1 && getBalancedHeight(node.right) <= 0) {
+			return rotateLeft(node);
+		} else if (balance < -1 && getBalancedHeight(node.right) > 0) {
+			node.right = rotateRight(node.right);
+			return rotateLeft(node);
+		}
 
+		return node;
 	}
 
-	public void levelOrderTraversal() {
+	public void levelOrder() {
 
-		Queue<TreeNode> queue = new LinkedList<TreeNode>();
+		if (root == null) {
+			System.out.println("Tree is empty");
+			return;
+		}
+		Queue<TreeNode> queue = new LinkedList<>();
 		queue.add(root);
 		while (!queue.isEmpty()) {
-			TreeNode presentNode = queue.remove();
-			System.out.print(presentNode.value + " ");
-			if (presentNode.left != null) {
-				queue.add(presentNode.left);
+
+			TreeNode currentNode = queue.remove();
+			System.out.print(currentNode.value + " ");
+			if (currentNode.left != null) {
+				queue.add(currentNode.left);
 			}
-			if (presentNode.right != null) {
-				queue.add(presentNode.right);
+			if (currentNode.right != null) {
+				queue.add(currentNode.right);
 			}
 		}
-		System.out.println();
 
 	}
+
 }

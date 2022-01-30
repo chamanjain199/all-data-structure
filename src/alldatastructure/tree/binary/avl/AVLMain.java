@@ -15,15 +15,14 @@ public class AVLMain {
 		avlTree.insert(10);
 		avlTree.insert(12);
 
-		
 		System.out.println("Insertion done");
-		
-		avlTree.levelOrderTraversal();
+
+		avlTree.levelOrder();
 		System.out.println("traversal done");
 
-		avlTree.delete(avlTree.root, 60);
+		avlTree.deleteNode(avlTree.root, 60);
 		System.out.println("delete done");
-
+		avlTree.levelOrder();
 
 	}
 
