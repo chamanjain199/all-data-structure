@@ -92,8 +92,8 @@ public class BinaryTreeMain {
 
 		System.out.print("Deleting Node --> ");
 		binaryTree.root=rootNode2;
-		binaryTree.deleteNode("N3");
-		binaryTree.deleteNode("N4");
+		binaryTree.deleteNode("N8");
+//		binaryTree.deleteNode("N4");
 
 		System.out.println();
 		

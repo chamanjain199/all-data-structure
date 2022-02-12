@@ -111,7 +111,7 @@ public class BinaryTree {
 		Queue<BinaryTreeNode> queue = new LinkedList<BinaryTreeNode>();
 		queue.add(root);
 		BinaryTreeNode deepestNode = null;
-		;
+		
 
 		while (!queue.isEmpty()) {
 			deepestNode = queue.remove();
@@ -159,7 +159,6 @@ public class BinaryTree {
 			if (presentNode.value.equals(value)) {
 				presentNode.value=getDeepestNode().value;
 				deleteDeepestNode();
-				
 				return;
 			}
 

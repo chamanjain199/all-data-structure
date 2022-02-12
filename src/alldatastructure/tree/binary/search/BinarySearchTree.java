@@ -2,7 +2,7 @@ package alldatastructure.tree.binary.search;
 
 import java.util.LinkedList;
 import java.util.Queue;
-
+//https://leetcode.com/problems/insert-into-a-binary-search-tree/
 public class BinarySearchTree {
 	BinaryTreeNode root;
 
@@ -21,7 +21,7 @@ public class BinarySearchTree {
 		} else {
 			currentNode.right = insert(currentNode.right, value);
 			return currentNode;
-
+  
 		}
 
 	}
