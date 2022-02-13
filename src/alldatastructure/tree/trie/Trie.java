@@ -13,19 +13,16 @@ public class Trie {
 
     public void insert(String value) {
         char chars[] = value.toCharArray();
-
         TrieNode current = root;
         for (int i = 0; i < chars.length; i++) {
 
-            current = current.childrens.putIfAbsent(Character.valueOf(chars[i]), new TrieNode());
-
+            current.childrens.putIfAbsent(chars[i], new TrieNode());
+            current = current.childrens.get(chars[i]);
         }
-
         current.endOfString = true;
-
     }
 
-    public void search(String value) {
+    public boolean search(String value) {
 
         TrieNode current = root;
         char chars[] = value.toCharArray();
@@ -35,46 +32,54 @@ public class Trie {
             current = current.childrens.get(Character.valueOf(chars[i]));
             if (current == null) {
                 System.out.println("Not found");
-                break;
+                return false;
             }
         }
         if (current.endOfString) {
             System.out.println("Found");
+            return true;
         } else {
-            System.out.println("Not found");
+            System.out.println("It is a prefix of another string");
+            return false;
         }
 
     }
 
-    public void delete(TrieNode parentNode, String word, int index) {
+    private boolean delete(TrieNode parentNode, String word, int index) {
 
-        TrieNode currentNode = root;
+        char ch = word.charAt(index);
+        TrieNode currentNode = parentNode.childrens.get(ch);
 
-        char[] allChars = word.toCharArray();
-
-        for (int i = 0; i < allChars.length; i++) {
-            currentNode = currentNode.childrens.get(allChars[i]);
-            if (currentNode == null) {
-                return;
-            }
+        if (currentNode.childrens.size() > 1) {
+            delete(currentNode, word, index + 1);
+            return false;
         }
-
-        if (currentNode.endOfString) {
-
-            if (currentNode.childrens.size() == 1) {
-                currentNode = null;
-            } else if (currentNode.childrens.size() > 1) {
+        if (index == word.length() - 1) {
+            if (currentNode.childrens.size() >= 1) {
                 currentNode.endOfString = false;
+                return false;
+            } else {
+                parentNode.childrens.remove(ch);
+                return true;
             }
+        }
+        if (currentNode.endOfString == true) {
+            delete(currentNode, word, index + 1);
+            return false;
+        }
+        if (delete(currentNode, word, index++)) {
+            parentNode.childrens.remove(ch); //this condition is reache donly when parent has only one child and that also been deleted
+            return false;
+        } else {
+            return true;
         }
     }
 
-    public TrieNode deleteRecursively(TrieNode parentNode, String word, int index,) {
-
-                 if(parentNode.childrens.containsKey(word.charAt(index))){
-
-                 }
-
-
+    public void delete(String word) {
+        if (search(word)) {
+            delete(root, word, 0);
+        }
     }
+
+
 }
